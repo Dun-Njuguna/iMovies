@@ -28,13 +28,13 @@
 			"name": "Storybook",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "yarn storybook dev -p 6006 -s ./public"
+			"command": "yarn storybook dev -p 6006"
 		},
 		{
 			"name": "Storybook build",
 			"type": "node-terminal",
 			"request": "launch",
-			"command": "yarn storybook build .s ./public"
+			"command": "yarn storybook build"
 		}
 	]
 }
