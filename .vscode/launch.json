@@ -1,28 +1,40 @@
 {
-  "version": "0.1.0",
-  "configurations": [
-    {
-      "name": "Next.js: debug server-side",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "yarn dev"
-    },
-    {
-      "name": "Next.js: debug client-side",
-      "type": "chrome",
-      "request": "launch",
-      "url": "http://localhost:3000"
-    },
-    {
-      "name": "Next.js: debug full stack",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "yarn dev",
-      "serverReadyAction": {
-        "pattern": "started server on .+, url: (https?://.+)",
-        "uriFormat": "%s",
-        "action": "debugWithChrome"
-      }
-    }
-  ]
+	"version": "0.1.0",
+	"configurations": [
+		{
+			"name": "Next.js: debug server-side",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "yarn dev"
+		},
+		{
+			"name": "Next.js: debug client-side",
+			"type": "chrome",
+			"request": "launch",
+			"url": "http://localhost:3000"
+		},
+		{
+			"name": "Next.js: debug full stack",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "yarn dev",
+			"serverReadyAction": {
+				"pattern": "started server on .+, url: (https?://.+)",
+				"uriFormat": "%s",
+				"action": "debugWithChrome"
+			}
+		},
+		{
+			"name": "Storybook",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "yarn storybook dev -p 6006 -s ./public"
+		},
+		{
+			"name": "Storybook build",
+			"type": "node-terminal",
+			"request": "launch",
+			"command": "yarn storybook build .s ./public"
+		}
+	]
 }
