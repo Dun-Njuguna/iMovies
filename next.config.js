@@ -4,6 +4,13 @@ const nextConfig = {
 	images: {
 		domains: ['i.pravatar.cc'],
 	},
+	redirects: async () => [
+		{
+			source: '/',
+			destination: '/explore',
+			permanent: false,
+		},
+	],
 };
 
 module.exports = nextConfig;
