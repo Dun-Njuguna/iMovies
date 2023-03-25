@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styles from './CatCard.module.css';
+import cat from '../../../../public/time-cat.jpg'
 
 export interface ICatCard {
 	tag: string;
@@ -15,7 +16,7 @@ const CatCard: React.FC<ICatCard> = ({ tag, title, body, author, time }) => {
 			<div className={styles.card}>
 				<div className={styles.card__header}>
 					<Image
-						src="/time-cat.jpg"
+						src={cat}
 						alt="card__image"
 						className={styles.card__image}
 						width="500"
