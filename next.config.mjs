@@ -2,8 +2,10 @@
 const nextConfig = {
 	reactStrictMode: true,
 	images: {
-		domains: ['i.pravatar.cc'],
+		loader: 'akamai',
+		path: '',
 	},
+	assetPrefix: './',
 	redirects: async () => [
 		{
 			source: '/',

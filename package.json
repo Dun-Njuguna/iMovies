@@ -49,5 +49,6 @@
 	},
 	"resolutions": {
 		"webpack": "^5"
-	}
+	},
+	"export": "next export"
 }
