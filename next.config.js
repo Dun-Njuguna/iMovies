@@ -5,11 +5,11 @@ const nextConfig = {
 		domains: ['i.pravatar.cc'],
 	},
 	redirects: async () => [
-		{
-			source: '/',
-			destination: '/explore',
-			permanent: false,
-		},
+		// {
+		// 	source: '/',
+		// 	destination: '/explore',
+		// 	permanent: false,
+		// },
 	],
 };
 
