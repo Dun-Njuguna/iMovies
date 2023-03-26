@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Box from '@mui/material/Box';
 import { PropsWithChildren } from 'react';
 import styles from './PrimaryLayout.module.css';
 
@@ -8,12 +8,9 @@ const PrimaryLayout: React.FC<PropsWithChildren<IPrimaryLayout>> = ({
 	children,
 }) => {
 	return (
-		<>
-			<Head>
-				<title>Primary Layout Example</title>
-			</Head>
-			<main className={styles.main}>{children}</main>
-		</>
+		<Box className={styles.main} px={{ xs: '1rem', md: '3rem' }} py="5rem">
+			{children}
+		</Box>
 	);
 };
 

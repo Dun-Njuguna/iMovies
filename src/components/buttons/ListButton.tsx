@@ -18,7 +18,7 @@ const listButton = (options: IOptions) => {
 			}}
 		>
 			{options?.icon && <options.icon />}
-			<Typography variant='subtitle2'>{options.name ?? ''}</Typography>
+			<Typography variant="subtitle2">{options.name ?? ''}</Typography>
 		</ListItemButton>
 	);
 };

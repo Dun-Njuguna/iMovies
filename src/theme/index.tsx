@@ -47,7 +47,7 @@ const appTheme = createTheme({
 			main: Colors.primary,
 		},
 		secondary: {
-			main: Colors.secondary
+			main: Colors.secondary,
 		},
 		background: {
 			default: '#fcfff9',

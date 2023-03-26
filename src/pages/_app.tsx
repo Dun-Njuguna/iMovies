@@ -14,7 +14,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 	return getLayout(
 		<ThemeProvider theme={appTheme}>
 			<Component {...pageProps} />
-		</ThemeProvider>
+		</ThemeProvider>,
 	);
 }
 

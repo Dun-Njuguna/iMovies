@@ -155,7 +155,7 @@ const SidebarLayout: React.FC<ISidebarLayout> = () => {
 				<DrawerHeader />
 				<List sx={{ backgroundColor: 'transparent', color: Colors.secondary }}>
 					<Typography
-						variant='subtitle1'
+						variant="subtitle1"
 						sx={{
 							opacity: open ? 1 : 0,
 							justifyContent: 'center',

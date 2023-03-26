@@ -5,9 +5,11 @@ import { SectionContainer } from '../../components/MUISection';
 import { NextPageWithLayout } from '../page';
 
 const WacthList: NextPageWithLayout = () => {
-	return <SectionContainer>
-		<div>WacthList</div>
+	return (
+		<SectionContainer>
+			<div>WacthList</div>
 		</SectionContainer>
+	);
 };
 
 export default WacthList;
