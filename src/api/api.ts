@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const base_url = process.env.BASE_URL;
+const API_KEY = process.env.API_KEY;
 
 const getBaseUrl = (): string | undefined => {
 	const _default = new URL(base_url as string);
@@ -13,7 +13,6 @@ const baseURL = getBaseUrl();
 const api = axios.create({ baseURL });
 
 const _request_interceptor = api.interceptors.request.use((request) => {
-	console.log('apikey', API_KEY);
 	request.params = {
 		...request.params,
 		api_key: API_KEY,

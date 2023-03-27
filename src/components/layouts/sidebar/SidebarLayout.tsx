@@ -1,5 +1,5 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { ListItemText, SvgIconProps } from '@mui/material';
+import { SvgIconProps } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -121,7 +121,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SidebarLayout: React.FC<ISidebarLayout> = () => {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(true);
 	const handleDrawerOpen = () => {
 		setOpen(!open);
 	};

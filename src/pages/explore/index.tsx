@@ -1,6 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import api from '../../api/api';
 import MovieCard from '../../components/cards/movie/MovieCard';
@@ -9,19 +10,26 @@ import SidebarLayout from '../../components/layouts/sidebar/SidebarLayout';
 import { Movie, PopularMovies } from '../../models/movies';
 import { NextPageWithLayout } from '../page';
 
-const Dashboard: NextPageWithLayout<PopularMovies> = ({page, total_pages, results}) => {
+const Dashboard: NextPageWithLayout<PopularMovies> = ({
+	total_pages,
+	results,
+}) => {
 	const [movies, setMovies] = useState<Movie[]>();
+	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	useEffect(() => {
 		setMovies(results);
 	}, [results]);
 
 	const handleChangePage = async (nextPage: number) => {
-		const response = await api.get<PopularMovies>(
-			`/movie/popular?page=${nextPage}`,
-		);
-		const data: PopularMovies = response.data;
-		setMovies(data.results);
+		const url = `/.netlify/functions/getMovies`;
+		const response = await axios.get<PopularMovies>(url, {
+			params: {
+				page: nextPage,
+			},
+		});
+		if (response.status) setCurrentPage(nextPage);
+		setMovies(response.data.results);
 		window.scrollTo({
 			top: 0,
 			left: 0,
@@ -43,7 +51,7 @@ const Dashboard: NextPageWithLayout<PopularMovies> = ({page, total_pages, result
 				color="secondary"
 				size="large"
 				sx={{ padding: '2rem' }}
-				page={page}
+				page={currentPage}
 				count={total_pages}
 				onChange={(_event, value) => {
 					handleChangePage(value);
@@ -63,7 +71,11 @@ Dashboard.getLayout = (page) => {
 };
 
 export const getStaticProps = async () => {
-	const response = await api.get<PopularMovies>('/movie/popular?page=1');
+	const response = await api.get<PopularMovies>('/movie/popular', {
+		params: {
+			page: 1,
+		},
+	});
 	const data: PopularMovies = response.data;
 	return {
 		props: data,
