@@ -78,7 +78,7 @@ export const getStaticProps = async () => {
 	});
 	const data: PopularMovies = response.data;
 	return {
-		props: data,
+		props: {...data},
 		revalidate: 1,
 	};
 };
