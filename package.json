@@ -34,6 +34,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "^17.4.4",
 		"@commitlint/config-conventional": "^17.4.4",
+		"@netlify/plugin-nextjs": "^4.33.0",
 		"@storybook/addon-essentials": "^7.0.0-rc.4",
 		"@storybook/addon-interactions": "^7.0.0-rc.4",
 		"@storybook/addon-links": "^7.0.0-rc.4",
