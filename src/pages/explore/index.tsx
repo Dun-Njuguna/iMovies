@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import api from '../../api/api';
 import MovieCard from '../../components/cards/movie/MovieCard';
-import PrimaryLayout from '../../components/layouts/primary/PrimaryLayout';
-import SidebarLayout from '../../components/layouts/sidebar/SidebarLayout';
+import PrimaryLayout from '../../layouts/primary/PrimaryLayout';
+import SidebarLayout from '../../layouts/sidebar/SidebarLayout';
 import { Movie, PopularMovies } from '../../models/movies';
 import { NextPageWithLayout } from '../page';
 
@@ -78,7 +78,7 @@ export const getStaticProps = async () => {
 	});
 	const data: PopularMovies = response.data;
 	return {
-		props: {...data},
+		props: { ...data },
 		revalidate: 1,
 	};
 };

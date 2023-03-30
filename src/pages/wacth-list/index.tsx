@@ -1,7 +1,6 @@
-import { AppBar } from '@mui/material';
-import PrimaryLayout from '../../components/layouts/primary/PrimaryLayout';
-import SidebarLayout from '../../components/layouts/sidebar/SidebarLayout';
 import { SectionContainer } from '../../components/MUISection';
+import PrimaryLayout from '../../layouts/primary/PrimaryLayout';
+import SidebarLayout from '../../layouts/sidebar/SidebarLayout';
 import { NextPageWithLayout } from '../page';
 
 const WacthList: NextPageWithLayout = () => {

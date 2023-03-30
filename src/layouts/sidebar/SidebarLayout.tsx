@@ -16,8 +16,8 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SyncIcon from '@mui/icons-material/Sync';
 import router from 'next/router';
-import { Colors } from '../../../theme';
-import listButton from '../../buttons/ListButton';
+import listButton from '../../components/buttons/ListButton';
+import { Colors } from '../../theme';
 
 export interface NavItem {
 	id: number;
