@@ -21,7 +21,13 @@ const slice = createSlice({
 		builder.addCase(
 			INITIAL_POPULAR_MOVIES,
 			(state, action: ActionWithPayload<PopularMovies>) => {
-				state.popularMovies.push(action.payload);
+				if (
+					state.popularMovies.findIndex(
+						(obj) => obj.page === action.payload.page,
+					) === -1
+				) {
+					state.popularMovies.push(action.payload);
+				}
 			},
 		);
 	},

@@ -1,26 +1,33 @@
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
+import { apiGetPopularMovies } from '../../api/movies';
 import MovieCard from '../../components/cards/movie/MovieCard';
 import PrimaryLayout from '../../layouts/primary/PrimaryLayout';
 import SidebarLayout from '../../layouts/sidebar/SidebarLayout';
 import { PopularMovies } from '../../models/movies';
 import { store, useDispatch } from '../../redux/ configureStore';
 import { getMoviesByPage } from '../../redux/slices/popularMovies';
-import { reduxGetPopularMovies } from '../../redux/thunks/movies';
+import {
+	populatePopularMovies,
+	reduxGetPopularMovies,
+} from '../../redux/thunks/movies';
 import { NextPageWithLayout } from '../page';
 
-const Dashboard: NextPageWithLayout<{
+interface DashboardProps extends AppProps {
 	popularMovies: PopularMovies[];
-}> = ({ popularMovies }) => {
-	const [movies, setMovies] = useState<PopularMovies>();
+}
+
+const Dashboard: NextPageWithLayout<DashboardProps> = ({ popularMovies }) => {
+	const [movies, setMovies] = useState<PopularMovies>(popularMovies[0]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		setMovies(popularMovies[0]);
-	}, [popularMovies]);
+		dispatch(populatePopularMovies(popularMovies[0]));
+	}, [popularMovies, dispatch]);
 
 	const handleChangePage = async (page: number) => {
 		let movies = getMoviesByPage(store.getState(), page);
@@ -74,10 +81,12 @@ Dashboard.getLayout = (page) => {
 };
 
 export const getStaticProps = async () => {
-	const state = store.getState();
+	const { dispatch } = store;
+	const res = await apiGetPopularMovies(`/movie/popular`, 1);
+	dispatch(populatePopularMovies(res.data));
 	return {
 		props: {
-			popularMovies: state.movies.popularMovies,
+			popularMovies: store.getState().movies.popularMovies,
 		},
 	};
 };

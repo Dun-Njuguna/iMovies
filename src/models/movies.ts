@@ -2,7 +2,6 @@ export type PopularMovies = {
 	page: number;
 	total_pages: number;
 	results: Movie[];
-	data: Movie[];
 };
 
 export type Movie = {

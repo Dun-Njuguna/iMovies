@@ -1,11 +1,8 @@
 import { ThemeProvider } from '@mui/material/styles';
-import type { AppContext, AppProps } from 'next/app';
-import App from 'next/app';
-import { Fragment, useEffect } from 'react';
+import type { AppProps } from 'next/app';
+import { Fragment } from 'react';
 import { Provider } from 'react-redux';
-import { apiGetPopularMovies } from '../api/movies';
 import { store } from '../redux/ configureStore';
-import { populatePopularMovies } from '../redux/thunks/movies';
 import appTheme from '../theme';
 import { NextPageWithLayout } from './page';
 
@@ -27,10 +24,6 @@ function AppLayout({ Component, pageProps }: MyAppProps) {
 }
 
 const MyApp = (props: MyAppProps) => {
-	const { dispatch } = store;
-	useEffect(() => {
-		dispatch(populatePopularMovies(props.pageProps.popularMovies[0]));
-	});
 	return (
 		<Provider store={store}>
 			<>
@@ -38,18 +31,6 @@ const MyApp = (props: MyAppProps) => {
 			</>
 		</Provider>
 	);
-};
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-	const appProps = await App.getInitialProps(appContext);
-	const { dispatch } = store;
-	const res = await apiGetPopularMovies(`/movie/popular`, 1);
-	dispatch(populatePopularMovies(res.data));
-	appProps.pageProps = {
-		...appProps.pageProps,
-		popularMovies: store.getState().movies.popularMovies,
-	};
-	return appProps;
 };
 
 export default MyApp;
