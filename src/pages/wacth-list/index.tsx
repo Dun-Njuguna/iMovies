@@ -4,11 +4,7 @@ import SidebarLayout from '../../layouts/sidebar/SidebarLayout';
 import { NextPageWithLayout } from '../page';
 
 const WacthList: NextPageWithLayout = () => {
-	return (
-		<SectionContainer>
-			<div>WacthList</div>
-		</SectionContainer>
-	);
+	return <SectionContainer>WacthList</SectionContainer>;
 };
 
 export default WacthList;

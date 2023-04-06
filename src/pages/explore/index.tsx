@@ -1,48 +1,51 @@
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import api from '../../api/api';
 import MovieCard from '../../components/cards/movie/MovieCard';
 import PrimaryLayout from '../../layouts/primary/PrimaryLayout';
 import SidebarLayout from '../../layouts/sidebar/SidebarLayout';
-import { Movie, PopularMovies } from '../../models/movies';
+import { PopularMovies } from '../../models/movies';
+import { store, useDispatch } from '../../redux/ configureStore';
+import { getMoviesByPage } from '../../redux/slices/popularMovies';
+import { reduxGetPopularMovies } from '../../redux/thunks/movies';
 import { NextPageWithLayout } from '../page';
 
-const Dashboard: NextPageWithLayout<PopularMovies> = ({
-	total_pages,
-	results,
-}) => {
-	const [movies, setMovies] = useState<Movie[]>();
+const Dashboard: NextPageWithLayout<{
+	popularMovies: PopularMovies[];
+}> = ({ popularMovies }) => {
+	const [movies, setMovies] = useState<PopularMovies>();
 	const [currentPage, setCurrentPage] = useState<number>(1);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
-		setMovies(results);
-	}, [results]);
+		setMovies(popularMovies[0]);
+	}, [popularMovies]);
 
-	const handleChangePage = async (nextPage: number) => {
-		const url = `/.netlify/functions/getMovies`;
-		const response = await axios.get<PopularMovies>(url, {
-			params: {
-				page: nextPage,
-			},
-		});
-		if (response.status) setCurrentPage(nextPage);
-		setMovies(response.data.results);
+	const handleChangePage = async (page: number) => {
+		let movies = getMoviesByPage(store.getState(), page);
+		if (!movies) {
+			const response = await dispatch(
+				reduxGetPopularMovies({ url: '/.netlify/functions/getMovies', page }),
+			);
+			movies = response.payload as PopularMovies;
+		}
+		if (movies) setCurrentPage(page);
+		setMovies(movies);
 		window.scrollTo({
 			top: 0,
 			left: 0,
 			behavior: 'smooth',
 		});
 	};
+
 	return (
 		<Stack
 			spacing={2}
 			sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
 		>
 			<Grid container rowSpacing={1} columnSpacing={{ xs: 1, md: 3 }}>
-				{movies?.map((movie) => {
+				{movies?.results.map((movie) => {
 					return <MovieCard key={movie.id} {...movie} />;
 				})}
 			</Grid>
@@ -52,7 +55,7 @@ const Dashboard: NextPageWithLayout<PopularMovies> = ({
 				size="large"
 				sx={{ padding: '2rem' }}
 				page={currentPage}
-				count={total_pages}
+				count={10}
 				onChange={(_event, value) => {
 					handleChangePage(value);
 				}}
@@ -71,15 +74,11 @@ Dashboard.getLayout = (page) => {
 };
 
 export const getStaticProps = async () => {
-	const response = await api.get<PopularMovies>('/movie/popular', {
-		params: {
-			page: 1,
-		},
-	});
-	const data: PopularMovies = response.data;
+	const state = store.getState();
 	return {
-		props: { ...data },
-		revalidate: 1,
+		props: {
+			popularMovies: state.movies.popularMovies,
+		},
 	};
 };
 

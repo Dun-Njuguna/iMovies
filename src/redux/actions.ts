@@ -1,1 +1,4 @@
 export const FETCH_POPULAR_MOVIES = 'FETCH_POPULAR_MOVIES';
+
+// Initial props actions
+export const INITIAL_POPULAR_MOVIES = "INITIAL_POPULAR_MOVIES"

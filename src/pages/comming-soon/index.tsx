@@ -4,11 +4,7 @@ import SidebarLayout from '../../layouts/sidebar/SidebarLayout';
 import { NextPageWithLayout } from '../page';
 
 const CommingSoon: NextPageWithLayout = () => {
-	return (
-		<SectionContainer>
-			<div>Comming Soon</div>
-		</SectionContainer>
-	);
+	return <SectionContainer>Comming Soon</SectionContainer>;
 };
 
 export default CommingSoon;

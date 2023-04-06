@@ -121,7 +121,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const SidebarLayout: React.FC<ISidebarLayout> = () => {
-	const [open, setOpen] = React.useState(true);
+	const [open, setOpen] = React.useState(false);
 	const handleDrawerOpen = () => {
 		setOpen(!open);
 	};

@@ -1,11 +1,10 @@
 import { combineReducers, configureStore as configure } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
 import popularMovies from './slices/popularMovies';
 
 const reducer = combineReducers({
-	movies:popularMovies,
+	movies: popularMovies,
 });
 
 const persistConfig = {

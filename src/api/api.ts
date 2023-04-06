@@ -1,14 +1,9 @@
 import axios from 'axios';
+import { env } from 'process';
 
-const base_url = process.env.BASE_URL;
 const API_KEY = process.env.API_KEY;
 
-const getBaseUrl = (): string | undefined => {
-	const _default = new URL(base_url as string);
-	return _default.href;
-};
-
-const baseURL = getBaseUrl();
+const baseURL =  env.BASE_URL;
 
 const api = axios.create({ baseURL });
 

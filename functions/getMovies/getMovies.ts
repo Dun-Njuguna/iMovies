@@ -13,7 +13,6 @@ const handler = async (event: any, context: any, callback: any) => {
 		const response = await api.get<PopularMovies>(
 			`/movie/popular?${event.rawQuery}`,
 		);
-
 		send(response.data);
 	};
 
