@@ -23,6 +23,7 @@ import {
 } from '../../redux/thunks/movies';
 import { Colors } from '../../theme';
 import { NextPageWithLayout } from '../page';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 
 export interface MovieDetailProps extends AppProps {
 	moviesDetails: MovieDetails;
@@ -31,6 +32,7 @@ export interface MovieDetailProps extends AppProps {
 
 interface IRecommendationsProp {
 	movies: PopularMovies | undefined;
+	// eslint-disable-next-line no-unused-vars
 	onClick: (movieId: string) => void;
 }
 
@@ -300,7 +302,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 			if (reduxGetMovieDetails.fulfilled.match(action)) {
 				movieDetails = action.payload;
 			} else if (reduxGetMovieDetails.rejected.match(action)) {
-				const error = action.payload;
+				//const error = action.payload;
 			}
 		}),
 		dispatch(reduxGetMovieRecommendations({ movieId: Number(id) })).then(
@@ -308,7 +310,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 				if (reduxGetMovieRecommendations.fulfilled.match(action)) {
 					movieRecommendations = action.payload;
 				} else if (reduxGetMovieRecommendations.rejected.match(action)) {
-					const error = action.payload;
+					//const error = action.payload;
 				}
 			},
 		),
