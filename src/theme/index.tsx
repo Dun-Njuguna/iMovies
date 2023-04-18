@@ -67,12 +67,14 @@ const appTheme = createTheme({
 		},
 		h4: {
 			fontFamily: 'Ubuntu Mono',
-		},
-		h6: {
-			fontFamily: 'Ubuntu Mono',
+			fontWeight: 700,
 		},
 		h5: {
 			fontFamily: 'Ubuntu Mono',
+		},
+		h6: {
+			fontFamily: 'Ubuntu Mono',
+			fontWeight: 900,
 		},
 		subtitle1: {
 			fontFamily: 'Ubuntu Mono',

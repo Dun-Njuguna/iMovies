@@ -1,15 +1,51 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../../api/api';
 import { apiGetPopularMovies } from '../../api/movies';
+import { MovieDetails } from '../../models/movieDetails';
 import { PopularMovies } from '../../models/movies';
-import { FETCH_POPULAR_MOVIES, INITIAL_POPULAR_MOVIES } from '../actions';
+import {
+	FETCH_MOVIES_DETAILS,
+	FETCH_POPULAR_MOVIES,
+	INITIAL_POPULAR_MOVIES,
+} from '../actions';
 
 export const reduxGetPopularMovies = createAsyncThunk<
 	PopularMovies,
-	{ url: string; page: number }
+	{ url: string; nextPage: number }
 >(FETCH_POPULAR_MOVIES, async (params) => {
-	const { url, page } = params;
-	const { data } = await apiGetPopularMovies(url, page);
+	const { url, nextPage } = params;
+	const { data } = await apiGetPopularMovies(url, nextPage);
 	return data;
+});
+
+export const reduxGetMovieDetails = createAsyncThunk<
+	MovieDetails,
+	{ movieId: number }
+>(FETCH_MOVIES_DETAILS, async (params) => {
+	const { movieId } = params;
+	return new Promise<MovieDetails>((resolve, reject) => {
+		api
+			.get<MovieDetails>(`/movie/${movieId}`)
+			.then((response) => {
+				resolve(response.data);
+			})
+			.catch((error) => reject(error));
+	});
+});
+
+export const reduxGetMovieRecommendations = createAsyncThunk<
+	PopularMovies,
+	{ movieId: number }
+>(FETCH_MOVIES_DETAILS, async (params) => {
+	const { movieId } = params;
+	return new Promise<PopularMovies>((resolve, reject) => {
+		api
+			.get<PopularMovies>(`/movie/${movieId}/recommendations`)
+			.then((response) => {
+				resolve(response.data);
+			})
+			.catch((error) => reject(error));
+	});
 });
 
 // Action Creators

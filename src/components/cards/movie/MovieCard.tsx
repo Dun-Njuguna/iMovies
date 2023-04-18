@@ -6,24 +6,31 @@ import Typography from '@mui/material/Typography';
 
 export interface IMovieCard {
 	id: number;
+	size:number;
 	title: string;
 	overview: string;
 	original_title: string;
 	poster_path: string;
+	onCardClicked: () => void
 }
 
 const MovieCard: React.FC<IMovieCard> = ({
 	title,
+	size,
 	poster_path,
 	original_title,
+	onCardClicked
 }) => {
 	return (
-		<Grid item xs={6} md={2} sx={{ display: 'flex' }}>
+		<Grid item xs={6} md={size} sx={{ display: 'flex' }}>
 			<Card
 				style={{
 					display: 'flex',
 					justifyContent: 'space-between',
 					flexDirection: 'column',
+				}}
+				onClick = {()=> {
+					onCardClicked()
 				}}
 			>
 				<CardMedia

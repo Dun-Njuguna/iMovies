@@ -2,7 +2,8 @@ import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 import { apiGetPopularMovies } from '../../api/movies';
 import MovieCard from '../../components/cards/movie/MovieCard';
 import PrimaryLayout from '../../layouts/primary/PrimaryLayout';
@@ -22,29 +23,57 @@ interface DashboardProps extends AppProps {
 
 const Dashboard: NextPageWithLayout<DashboardProps> = ({ popularMovies }) => {
 	const [movies, setMovies] = useState<PopularMovies>(popularMovies[0]);
-	const [currentPage, setCurrentPage] = useState<number>(1);
 	const dispatch = useDispatch();
+	const router = useRouter();
+
+	const { page } = router.query;
+
+	const updatePage = useCallback(
+		(pageNo: number) => {
+			console.log('rendered updatePage');
+			router.push(
+				{
+					query: { page: pageNo },
+				},
+				undefined,
+				{ shallow: true },
+			);
+		},
+		[router],
+	);
+
+	const handleChangePage = useCallback(
+		async (nextPage: number) => {
+			let movies = getMoviesByPage(store.getState(), nextPage);
+			if (!movies) {
+				const response = await dispatch(
+					reduxGetPopularMovies({
+						url: '/.netlify/functions/getMovies',
+						nextPage,
+					}),
+				);
+				movies = response.payload as PopularMovies;
+			}
+			if (movies) {
+				setMovies(movies);
+				window.scrollTo({
+					top: 0,
+					left: 0,
+					behavior: 'smooth',
+				});
+			}
+		},
+		[dispatch],
+	);
 
 	useEffect(() => {
-		dispatch(populatePopularMovies(popularMovies[0]));
-	}, [popularMovies, dispatch]);
-
-	const handleChangePage = async (page: number) => {
-		let movies = getMoviesByPage(store.getState(), page);
-		if (!movies) {
-			const response = await dispatch(
-				reduxGetPopularMovies({ url: '/.netlify/functions/getMovies', page }),
-			);
-			movies = response.payload as PopularMovies;
+		if (!page) {
+			dispatch(populatePopularMovies(popularMovies[0]));
+			updatePage(1); // initial page
+		} else {
+			handleChangePage(Number(page));
 		}
-		if (movies) setCurrentPage(page);
-		setMovies(movies);
-		window.scrollTo({
-			top: 0,
-			left: 0,
-			behavior: 'smooth',
-		});
-	};
+	}, [dispatch, handleChangePage, page, popularMovies, updatePage]);
 
 	return (
 		<Stack
@@ -53,7 +82,16 @@ const Dashboard: NextPageWithLayout<DashboardProps> = ({ popularMovies }) => {
 		>
 			<Grid container rowSpacing={1} columnSpacing={{ xs: 1, md: 3 }}>
 				{movies?.results.map((movie) => {
-					return <MovieCard key={movie.id} {...movie} />;
+					return (
+						<MovieCard
+							key={movie.id}
+							{...movie}
+							size={2}
+							onCardClicked={() => {
+								router.push(`/explore/${movie.id}`);
+							}}
+						/>
+					);
 				})}
 			</Grid>
 			<Pagination
@@ -61,10 +99,10 @@ const Dashboard: NextPageWithLayout<DashboardProps> = ({ popularMovies }) => {
 				color="secondary"
 				size="large"
 				sx={{ padding: '2rem' }}
-				page={currentPage}
-				count={10}
+				page={page ? Number(page) : 1}
+				count={movies?.total_pages}
 				onChange={(_event, value) => {
-					handleChangePage(value);
+					updatePage(value);
 				}}
 			/>
 		</Stack>
