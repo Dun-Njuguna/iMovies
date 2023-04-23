@@ -4,6 +4,7 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import { SxProps, Theme } from '@mui/material/styles';
 import { GetServerSidePropsContext } from 'next';
@@ -21,9 +22,8 @@ import {
 	reduxGetMovieDetails,
 	reduxGetMovieRecommendations,
 } from '../../redux/thunks/movies';
-import { Colors } from '../../theme';
+import theme, { Colors } from '../../theme';
 import { NextPageWithLayout } from '../page';
-import { SvgIconProps } from '@mui/material/SvgIcon';
 
 export interface MovieDetailProps extends AppProps {
 	moviesDetails: MovieDetails;
@@ -44,6 +44,7 @@ interface IGridItemProps {
 
 interface IActionIconProps {
 	Icon: React.ComponentType<SvgIconProps<'svg', {}>>;
+	sx?: SxProps<Theme>;
 }
 
 const MovieDetailView: NextPageWithLayout<MovieDetailProps> = ({
@@ -73,7 +74,10 @@ const MovieDetailView: NextPageWithLayout<MovieDetailProps> = ({
 					<Grid
 						container
 						sx={{
-							padding: '3rem',
+							padding: { md: '3rd' },
+							display: 'flex',
+							flexDirection: { xs: 'column', md: 'row' },
+							alignContent: 'center',
 						}}
 					>
 						<MovieOverview {...moviesDetails} />
@@ -125,17 +129,24 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 					marginTop: '2rem',
 					display: 'flex',
 					flexDirection: 'row',
-					alignItems: 'center',
 				}}
 			>
 				{moviesDetails && (
-					<Image
-						width={200}
-						height={300}
-						alt="Sunset"
-						style={{ objectFit: 'cover' }}
-						src={`https://image.tmdb.org/t/p/w500${moviesDetails.poster_path}`}
-					/>
+					<Box
+						sx={{
+							[theme.breakpoints.down('sm')]: {
+								display: 'none',
+							},
+						}}
+					>
+						<Image
+							width={200}
+							height={300}
+							alt="Sunset"
+							style={{ objectFit: 'cover' }}
+							src={`https://image.tmdb.org/t/p/w500${moviesDetails.poster_path}`}
+						/>
+					</Box>
 				)}
 
 				<Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -145,7 +156,7 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 							display: 'flex',
 							flexWrap: 'wrap',
 							flexDirection: 'row',
-							gap: 3,
+							gap: { xs: 1, md: 2 },
 							margin: '2rem 0rem',
 						}}
 					>
@@ -154,7 +165,7 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 								<HighlightCard
 									key={genre.id}
 									title={genre.name}
-									sx={{ padding: '0.6rem 3rem' }}
+									sx={{ padding: { xs: '0.6rem 1rem', md: '0.6rem 3rem' } }}
 								/>
 							);
 						})}
@@ -163,10 +174,17 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 						sx={{
 							gap: 3,
 							display: 'flex',
-							flexDirection: 'row',
-							alignItems: 'center',
+							flexWrap: 'wrap',
+							justifyContent: 'start',
+							flexDirection: { xs: 'row-reverse', md: 'row' },
 						}}
 					>
+						<ActionIcon
+							Icon={FavoriteBorderIcon}
+							sx={{ order: { xs: 1, md: 2 } }}
+						/>
+						<ActionIcon Icon={ShareIcon} sx={{ order: 2 }} />
+						<ActionIcon Icon={MoreHorizIcon} sx={{ order: 3 }} />
 						<HighlightCard
 							title={'Watch'}
 							Icon={PlayCircleOutlineIcon}
@@ -175,13 +193,10 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 								color: Colors.danger,
 								padding: '0.8rem 3rem',
 								textTransform: 'uppercase',
+								order: { xs: 4, md: 1 },
 							}}
 							iconSx={{ height: '2.5rem', width: '2.5rem' }}
 						/>
-
-						<ActionIcon Icon={FavoriteBorderIcon} />
-						<ActionIcon Icon={ShareIcon} />
-						<ActionIcon Icon={MoreHorizIcon} />
 					</Box>
 				</Box>
 			</Box>
@@ -194,24 +209,7 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 				}}
 			>
 				<MovieDetailsGridItem
-					md={2}
-					sx={{
-						gap: '1rem',
-						px: '2rem',
-						display: 'flex',
-						flexDirection: 'column',
-					}}
-				>
-					<Typography variant="h5">
-						{moviesDetails &&
-							new Date(moviesDetails?.release_date).getUTCFullYear()}
-					</Typography>
-					<Typography variant="h5">{moviesDetails?.runtime}</Typography>
-					<Typography variant="h5">{moviesDetails?.vote_average}</Typography>
-				</MovieDetailsGridItem>
-
-				<MovieDetailsGridItem
-					md={8}
+					md={12}
 					sx={{
 						gap: '1rem',
 						display: 'flex',
@@ -228,11 +226,12 @@ const MovieOverview = (moviesDetails: MovieDetails) => {
 	);
 };
 
-const ActionIcon: React.FC<IActionIconProps> = ({ Icon }) => {
+const ActionIcon: React.FC<IActionIconProps> = ({ Icon, sx }) => {
 	return (
 		<HighlightCard
 			Icon={Icon}
 			sx={{
+				...sx,
 				height: '4rem',
 				width: '4rem',
 				border: `1px solid`,
@@ -274,7 +273,7 @@ const Recommendations = ({ movies, onClick }: IRecommendationsProp) => {
 
 const MovieDetailsGridItem = ({ md, sx, children }: IGridItemProps) => {
 	return (
-		<Grid item xs={6} md={md} sx={sx}>
+		<Grid item xs={12} md={md} sx={sx}>
 			{children}
 		</Grid>
 	);

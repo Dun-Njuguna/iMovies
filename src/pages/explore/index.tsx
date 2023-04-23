@@ -36,7 +36,7 @@ const Dashboard: NextPageWithLayout<DashboardProps> = ({ popularMovies }) => {
 					query: { page: pageNo },
 				},
 				undefined,
-				{ shallow: true },
+				{ shallow: true }, 
 			);
 		},
 		[router],

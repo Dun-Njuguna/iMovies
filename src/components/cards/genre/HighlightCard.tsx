@@ -22,7 +22,7 @@ const HighlightCard: React.FC<IHighlightCard> = ({
 		<StyledHighlightCard sx={sx}>
 			<Box
 				sx={{
-					gap: 4,
+					gap: {xs: 1, md:4},
 					display: 'flex',
 					flexDirection: 'row',
 					alignItems: 'center',
